@@ -89,7 +89,6 @@ exports.generateQuiz = async (req, res) => {
 
         await note.save();
 
-        // console.log("✅ Quiz saved to MongoDB");
 
         res.json({
 

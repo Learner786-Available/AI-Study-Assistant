@@ -66,7 +66,6 @@ TEXT:
 ${importantText}
 
 `;
-    console.log(prompt);
     const response = await chatWithGemini(prompt);
 
     const clean = response

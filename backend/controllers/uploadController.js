@@ -18,11 +18,6 @@ exports.uploadFile = async (req, res) => {
 
     try {
 
-        console.log("========== Upload Started ==========");
-
-        // --------------------------------
-        // 1. Check uploaded file
-        // --------------------------------
 
         if (!req.file) {
 
@@ -33,24 +28,11 @@ exports.uploadFile = async (req, res) => {
 
         }
 
-        console.log("FILE NAME:", req.file.originalname);
-        console.log("FILE PATH:", req.file.path);
 
-        // --------------------------------
-        // 2. Get absolute file path
-        // --------------------------------
 
         const absoluteFilePath = path.resolve(req.file.path);
 
-        console.log("ABSOLUTE FILE PATH:", absoluteFilePath);
-
-        // --------------------------------
-        // 3. Check if file actually exists
-        // --------------------------------
-
         const fileExists = fs.existsSync(absoluteFilePath);
-
-        console.log("FILE EXISTS:", fileExists);
 
         if (!fileExists) {
 
@@ -66,9 +48,6 @@ exports.uploadFile = async (req, res) => {
 
         }
 
-        // --------------------------------
-        // 4. Start progress job
-        // --------------------------------
 
         startJob(req.user.id);
 
@@ -80,12 +59,6 @@ exports.uploadFile = async (req, res) => {
                 totalPages: 0
             }
         );
-
-        // --------------------------------
-        // 5. Extract PDF text
-        // --------------------------------
-
-        console.log("Reading PDF from:", absoluteFilePath);
 
         const result = await extractText(absoluteFilePath);
 
@@ -102,21 +75,10 @@ exports.uploadFile = async (req, res) => {
 
         const totalPages = result.totalPages;
 
-        console.log("PDF TOTAL PAGES:", totalPages);
-        console.log("EXTRACTED TEXT LENGTH:", text.length);
-
-        // --------------------------------
-        // 6. Check scanned PDF
-        // --------------------------------
-
         const isScanned = text.length < 500;
 
         if (isScanned) {
 
-            console.log("⚠️ Scanned PDF detected.");
-
-            // IMPORTANT:
-            // Use absolute path here as well
             const { images } = await pdfToImages(
                 absoluteFilePath
             );
@@ -167,16 +129,8 @@ exports.uploadFile = async (req, res) => {
 
             text = cleanText(ocrText);
 
-            console.log(
-                "OCR TEXT LENGTH:",
-                text.length
-            );
-
         }
 
-        // --------------------------------
-        // 7. Saving note
-        // --------------------------------
 
         sendProgress(
             req.user.id,
@@ -193,11 +147,6 @@ exports.uploadFile = async (req, res) => {
             }
         );
 
-        console.log("Saving Note...");
-
-        // --------------------------------
-        // 8. Create MongoDB note
-        // --------------------------------
 
         const note = await Note.create({
 
@@ -224,11 +173,6 @@ exports.uploadFile = async (req, res) => {
 
         });
 
-        console.log("Note Saved");
-
-        // --------------------------------
-        // 9. Finish job
-        // --------------------------------
 
         finishJob(req.user.id);
 
@@ -253,9 +197,6 @@ exports.uploadFile = async (req, res) => {
             }
         );
 
-        // --------------------------------
-        // 10. Send response
-        // --------------------------------
 
         return res.status(200).json({
 
