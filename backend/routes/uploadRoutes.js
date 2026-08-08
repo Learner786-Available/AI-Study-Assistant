@@ -8,15 +8,21 @@ const fs = require("fs");
 const uploadController = require("../controllers/uploadController");
 const authMiddleware = require("../middleware/authMiddleware");
 
-const uploadDir = path.join(__dirname, "../uploads");
+const uploadDir = path.join(
+    __dirname,
+    "../uploads"
+);
 
-fs.mkdirSync(uploadDir, { recursive: true });
+// Create uploads folder if it doesn't exist
+if (!fs.existsSync(uploadDir)) {
+    fs.mkdirSync(uploadDir, {
+        recursive: true
+    });
+}
 
 const storage = multer.diskStorage({
 
     destination(req, file, cb) {
-
-        console.log("UPLOAD DIRECTORY:", uploadDir);
 
         cb(null, uploadDir);
 
@@ -24,12 +30,11 @@ const storage = multer.diskStorage({
 
     filename(req, file, cb) {
 
-        const filename =
-            Date.now() + path.extname(file.originalname);
-
-        console.log("UPLOADING FILE:", filename);
-
-        cb(null, filename);
+        cb(
+            null,
+            Date.now() +
+            path.extname(file.originalname)
+        );
 
     }
 
