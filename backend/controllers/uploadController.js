@@ -3,6 +3,7 @@ const { pdfToImages } = require("../services/ocrService");
 const { extractTextFromImage } = require("../services/geminiService");
 const Note = require("../models/Note");
 const { sendProgress } = require("../utils/progressManager");
+const fs = require("fs");
 const {
 
     startJob,
@@ -53,6 +54,7 @@ exports.uploadFile = async (req, res) => {
         );
 
         const absoluteFilePath = path.resolve(req.file.path);
+
 
         console.log("FILE PATH:", req.file.path);
         console.log("ABSOLUTE FILE PATH:", absoluteFilePath);

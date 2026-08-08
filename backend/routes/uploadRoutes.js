@@ -3,46 +3,47 @@ const router = express.Router();
 
 const multer = require("multer");
 const path = require("path");
+const fs = require("fs");
 
 const uploadController = require("../controllers/uploadController");
 const authMiddleware = require("../middleware/authMiddleware");
 
+const uploadDir = path.join(__dirname, "../uploads");
+
+fs.mkdirSync(uploadDir, { recursive: true });
+
 const storage = multer.diskStorage({
 
     destination(req, file, cb) {
-    cb(null, path.join(__dirname, "../uploads"));
-},
+
+        console.log("UPLOAD DIRECTORY:", uploadDir);
+
+        cb(null, uploadDir);
+
+    },
 
     filename(req, file, cb) {
 
-        cb(
+        const filename =
+            Date.now() + path.extname(file.originalname);
 
-            null,
+        console.log("UPLOADING FILE:", filename);
 
-            Date.now() + path.extname(file.originalname)
-
-        );
+        cb(null, filename);
 
     }
 
 });
 
 const upload = multer({
-
     storage
-
 });
 
 router.post(
-
     "/",
-
     authMiddleware,
-
-    upload.single("file"),  
-
+    upload.single("file"),
     uploadController.uploadFile
-
 );
 
 module.exports = router;
