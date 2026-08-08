@@ -11,6 +11,7 @@ const {
     finishJob
 
 } = require("../utils/cancelManager");
+const path = require("path");
 // const { extractPages } = require("../services/pageExtractor");
 
 const MAX_OCR_PAGES = 5;
@@ -51,7 +52,12 @@ exports.uploadFile = async (req, res) => {
 
         );
 
-        const result = await extractText(req.file.path);
+        const absoluteFilePath = path.resolve(req.file.path);
+
+        console.log("FILE PATH:", req.file.path);
+        console.log("ABSOLUTE FILE PATH:", absoluteFilePath);
+
+        const result = await extractText(absoluteFilePath);
 
         sendProgress(
 
@@ -129,17 +135,17 @@ exports.uploadFile = async (req, res) => {
         }
 
         sendProgress(
-    req.user.id,
-    {
-        stage: "Saving Note...",
-        currentPage: isScanned
-            ? Math.min(totalPages, 5)
-            : totalPages,
-        totalPages: isScanned
-            ? Math.min(totalPages, 5)
-            : totalPages
-    }
-);
+            req.user.id,
+            {
+                stage: "Saving Note...",
+                currentPage: isScanned
+                    ? Math.min(totalPages, 5)
+                    : totalPages,
+                totalPages: isScanned
+                    ? Math.min(totalPages, 5)
+                    : totalPages
+            }
+        );
 
         console.log("Saving Note...");
 
@@ -151,7 +157,7 @@ exports.uploadFile = async (req, res) => {
 
             filename: req.file.filename,
 
-            filepath: req.file.path,
+            filepath: absoluteFilePath,
 
             text,
 
@@ -173,23 +179,23 @@ exports.uploadFile = async (req, res) => {
 
         sendProgress(
 
-    req.user.id,
+            req.user.id,
 
-    {
+            {
 
-        stage: "Completed",
+                stage: "Completed",
 
-        currentPage: isScanned
-            ? Math.min(totalPages, MAX_OCR_PAGES)
-            : totalPages,
+                currentPage: isScanned
+                    ? Math.min(totalPages, MAX_OCR_PAGES)
+                    : totalPages,
 
-        totalPages: isScanned
-            ? Math.min(totalPages, MAX_OCR_PAGES)
-            : totalPages
+                totalPages: isScanned
+                    ? Math.min(totalPages, MAX_OCR_PAGES)
+                    : totalPages
 
-    }
+            }
 
-);
+        );
 
         return res.status(200).json({
 
