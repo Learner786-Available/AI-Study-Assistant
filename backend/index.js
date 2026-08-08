@@ -9,7 +9,8 @@ const connectDB = require("./config/db");
 
 const express = require("express");
 const cors = require("cors");
-
+const fs = require("fs");
+const path = require("path");
 const uploadRoutes = require("./routes/uploadRoutes");
 const summaryRoutes = require("./routes/summaryRoutes");
 const chatRoutes = require("./routes/chatRoutes");
@@ -22,6 +23,11 @@ const authRoutes = require("./routes/authRoutes");
 const progressRoutes = require("./routes/progressRoutes");
 
 const app = express();
+const uploadsDir = path.join(__dirname, "uploads");
+const profileUploadsDir = path.join(uploadsDir, "profile");
+
+fs.mkdirSync(uploadsDir, { recursive: true });
+fs.mkdirSync(profileUploadsDir, { recursive: true });
 
 // Middleware
 app.use(cors());
