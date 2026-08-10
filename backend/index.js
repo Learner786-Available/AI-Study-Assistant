@@ -21,6 +21,7 @@ const noteRoutes = require("./routes/noteRoutes");
 const chatHistoryRoutes = require("./routes/chatHistoryRoutes");
 const authRoutes = require("./routes/authRoutes");
 const progressRoutes = require("./routes/progressRoutes");
+const passport = require("./config/passport");
 
 const app = express();
 const uploadsDir = path.join(__dirname, "uploads");
@@ -33,6 +34,7 @@ fs.mkdirSync(profileUploadsDir, { recursive: true });
 app.use(cors());
 app.use(express.json());
 app.use("/uploads", express.static("uploads"));
+app.use(passport.initialize());
 
 // Routes
 app.use("/api/upload", uploadRoutes);

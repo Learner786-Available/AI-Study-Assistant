@@ -3,7 +3,8 @@ import { useContext, useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 
 import { AuthContext } from "../context/AuthContext";
-import { FiEye, FiEyeOff } from "react-icons/fi";
+import { FiEye, FiEyeOff} from "react-icons/fi";
+import { FcGoogle } from "react-icons/fc";
 
 export default function LoginPage() {
 
@@ -83,6 +84,13 @@ export default function LoginPage() {
         }
 
         setLoading(false);
+
+    };
+
+    const handleGoogleLogin = () => {
+
+        window.location.href =
+            `${import.meta.env.VITE_API_URL}/api/auth/google`;
 
     };
 
@@ -184,6 +192,33 @@ export default function LoginPage() {
 
                     }
 
+                </button>
+
+                <div className="flex items-center my-5">
+
+                    <div className="flex-1 border-t border-gray-300 dark:border-gray-600"></div>
+
+                    <span className="px-3 text-sm text-gray-500 dark:text-gray-400">
+                        OR
+                    </span>
+
+                    <div className="flex-1 border-t border-gray-300 dark:border-gray-600"></div>
+
+                </div>
+
+                <button
+                    type="button"
+                    onClick={() => {
+                        window.location.href =
+                            `${import.meta.env.VITE_API_URL}/api/auth/google`;
+                    }}
+                    className="w-full mt-3 border border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-700 text-gray-800 dark:text-white py-3 rounded-xl flex items-center justify-center gap-3 hover:bg-gray-50 dark:hover:bg-gray-600 hover:scale-[1.02] active:scale-95 transition-all duration-200"
+                >
+                    <FcGoogle size={22} />
+
+                    <span>
+                        Continue with Google
+                    </span>
                 </button>
 
                 <p className="mt-5 text-center text-sm sm:text-base text-gray-700 dark:text-gray-300">

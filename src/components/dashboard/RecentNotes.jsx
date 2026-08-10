@@ -87,7 +87,7 @@ export default function RecentNotes({
                             className="flex flex-col lg:flex-row lg:items-center lg:justify-between gap-4 border-b border-gray-200 dark:border-gray-700 py-5 px-3 rounded-lg hover:bg-gray-50 dark:hover:bg-gray-700 hover:shadow-md transition-all duration-300"
                         >
 
-                           <div className="flex-1 min-w-0">
+                            <div className="flex-1 min-w-0">
 
                                 <h3 className="font-semibold text-base sm:text-lg text-gray-800 dark:text-white break-words">
                                     {note.title}
@@ -142,7 +142,17 @@ export default function RecentNotes({
                                             }
 
                                             setNoteId(data.note._id);
-                                            setQuiz(data.note.quiz || []);
+
+                                            const savedQuizzes = data.note.quiz || [];
+
+                                            if (savedQuizzes.length === 0) {
+                                                toast.error("No saved quiz found for this PDF.");
+                                                return;
+                                            }
+
+                                            const latestQuiz = savedQuizzes[savedQuizzes.length - 1];
+ 
+                                            setQuiz(latestQuiz.questions || []);
                                             setTitle(data.note.title);
 
                                             navigate("/quiz");

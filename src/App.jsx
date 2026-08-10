@@ -16,6 +16,9 @@ import GuidePage from "./pages/GuidePage";
 import { useState } from "react";
 import { FiMenu } from "react-icons/fi";
 import ProgressLoader from "./components/ProgressLoader";
+import VerifyEmailPage from "./pages/VerifyEmailPage";
+import GoogleSuccessPage from "./pages/GoogleSuccessPage";
+import GooglePasswordPage from "./pages/GooglePasswordPage";
 
 function App() {
   const [sidebarOpen, setSidebarOpen] = useState(false);
@@ -62,6 +65,21 @@ function App() {
         <Route
           path="/register"
           element={<RegisterPage />}
+        />
+
+        <Route
+          path="/verify-email"
+          element={<VerifyEmailPage />}
+        />
+
+        <Route
+          path="/google-success"
+          element={<GoogleSuccessPage />}
+        />
+
+        <Route
+          path="/google-password"
+          element={<GooglePasswordPage />}
         />
 
         {/* Protected Routes */}

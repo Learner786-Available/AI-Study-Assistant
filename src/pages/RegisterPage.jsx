@@ -80,11 +80,15 @@ export default function RegisterPage() {
 
             const data = await res.json();
 
-            if (data.success) {
+            if (res.ok && data.success) {
 
-                toast.success("Registration Successful");
+                toast.success("Verification code sent to your email");
 
-                navigate("/");
+                navigate("/verify-email", {
+                    state: {
+                        email
+                    }
+                });
 
             }
 
@@ -168,7 +172,7 @@ export default function RegisterPage() {
 
                         onChange={(e) => setPassword(e.target.value)}
 
-                       className="w-full border border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-700 text-gray-900 dark:text-white p-3 rounded-xl pr-12 focus:ring-2 focus:ring-blue-500 outline-none"
+                        className="w-full border border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-700 text-gray-900 dark:text-white p-3 rounded-xl pr-12 focus:ring-2 focus:ring-blue-500 outline-none"
 
                     />
 
@@ -207,21 +211,21 @@ export default function RegisterPage() {
 
                             className={`text-sm ${getPasswordStrength() === "Strong"
 
+                                ?
+
+                                "text-green-600"
+
+                                :
+
+                                getPasswordStrength() === "Medium"
+
                                     ?
 
-                                    "text-green-600"
+                                    "text-yellow-600"
 
                                     :
 
-                                    getPasswordStrength() === "Medium"
-
-                                        ?
-
-                                        "text-yellow-600"
-
-                                        :
-
-                                        "text-red-600"
+                                    "text-red-600"
 
                                 }`}
 
@@ -339,15 +343,10 @@ export default function RegisterPage() {
                     >
 
                         Login
-
                     </Link>
 
                 </p>
-
             </form>
-
         </div>
-
     );
-
 }
