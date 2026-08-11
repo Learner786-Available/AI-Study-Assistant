@@ -647,7 +647,7 @@ exports.verifyEmail = async (req, res) => {
 };
 
 exports.setGooglePassword = async (req, res) => {
-
+console.log("SET GOOGLE PASSWORD REQUEST RECEIVED");
     try {
 
         const {
