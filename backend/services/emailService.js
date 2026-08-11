@@ -1,23 +1,28 @@
 const nodemailer = require("nodemailer");
 
 const transporter = nodemailer.createTransport({
-    service: "gmail",
+    host: "smtp.gmail.com",
+    port: 465,
+    secure: true,
 
     auth: {
         user: process.env.EMAIL_USER,
         pass: process.env.EMAIL_APP_PASSWORD
     },
 
-    tls: {
-        rejectUnauthorized: false
-    }
+    connectionTimeout: 20000,
+    greetingTimeout: 20000,
+    socketTimeout: 20000
 });
 
 const sendVerificationEmail = async (email, code) => {
 
     await transporter.sendMail({
+
         from: `"AI Study Assistant" <${process.env.EMAIL_USER}>`,
+
         to: email,
+
         subject: "Verify your AI Study Assistant account",
 
         html: `
