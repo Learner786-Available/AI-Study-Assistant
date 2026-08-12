@@ -14,6 +14,7 @@ export default function DashboardPage() {
         totalSummaries: 0,
         totalQuizzes: 0,
         highestScore: "0/10",
+        highestScoreAttempt: null,
         averageScore: "0%",
         lastUpload: "No Notes"
     });
@@ -167,6 +168,7 @@ export default function DashboardPage() {
                         totalSummaries={stats.totalSummaries}
                         totalQuizzes={stats.totalQuizzes}
                         highestScore={stats.highestScore}
+                        highestScoreAttempt={stats.highestScoreAttempt}
                         averageScore={stats.averageScore}
                         lastUpload={stats.lastUpload}
                     />

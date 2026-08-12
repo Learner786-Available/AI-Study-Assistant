@@ -140,3 +140,48 @@ exports.getHighScore = async (req, res) => {
     }
 
 };
+
+// Get All Quiz History
+exports.getAllHistory = async (req, res) => {
+
+    try {
+
+        const history = await QuizHistory.find({
+            userId: req.user.id
+        })
+        .populate({
+            path: "noteId",
+            select: "title"
+        })
+        .sort({
+            createdAt: -1
+        });
+
+        // Remove quiz history whose Note has already been deleted
+        const validHistory = history.filter(
+            item => item.noteId !== null
+        );
+
+        res.json({
+
+            success: true,
+            history: validHistory
+
+        });
+
+    }
+
+    catch (err) {
+
+        console.error(err);
+
+        res.status(500).json({
+
+            success: false,
+            error: err.message
+
+        });
+
+    }
+
+};

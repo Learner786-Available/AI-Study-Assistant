@@ -44,18 +44,16 @@ exports.getDashboard = async (req, res) => {
         });
 
         const highest = await QuizHistory.findOne({
-
             noteId: {
-
                 $in: noteIds
-
             }
-
-        }).sort({
-
-            score: -1
-
-        });
+        })
+            .sort({
+                score: -1,
+                percentage: -1,
+                createdAt: -1
+            })
+            .populate("noteId", "title");
 
         const average = await QuizHistory.aggregate([
 
@@ -126,10 +124,21 @@ exports.getDashboard = async (req, res) => {
                 totalQuizzes,
 
                 highestScore: highest
-
                     ? `${highest.score}/${highest.totalQuestions}`
-
                     : "0/10",
+
+                highestScoreAttempt: highest
+                    ? {
+                        id: highest._id,
+                        noteId: highest.noteId?._id,
+                        noteTitle: highest.noteId?.title || "Unknown Note",
+                        score: highest.score,
+                        totalQuestions: highest.totalQuestions,
+                        percentage: highest.percentage,
+                        timeTaken: highest.timeTaken,
+                        createdAt: highest.createdAt
+                    }
+                    : null,
 
                 averageScore: average.length
 
@@ -159,6 +168,45 @@ exports.getDashboard = async (req, res) => {
 
             success: false,
 
+            error: err.message
+
+        });
+
+    }
+
+};
+
+exports.getAllSummaries = async (req, res) => {
+
+    try {
+
+        const summaries = await Note.find({
+            userId: req.user.id,
+            summary: {
+                $ne: ""
+            }
+        })
+            .select("_id title summary createdAt")
+            .sort({
+                createdAt: -1
+            });
+
+        res.json({
+
+            success: true,
+            summaries
+
+        });
+
+    }
+
+    catch (err) {
+
+        console.error(err);
+
+        res.status(500).json({
+
+            success: false,
             error: err.message
 
         });

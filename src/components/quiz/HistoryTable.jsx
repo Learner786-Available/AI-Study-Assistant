@@ -94,8 +94,7 @@ export default function HistoryTable({
 
                                     <td className="py-3 px-2 whitespace-nowrap text-gray-600 dark:text-gray-400">
 
-                                        {new Date(item.date).toLocaleString()}
-
+                                        {new Date(item.createdAt).toLocaleString()}
                                     </td>
 
                                 </tr>

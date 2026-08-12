@@ -19,6 +19,10 @@ import ProgressLoader from "./components/ProgressLoader";
 import VerifyEmailPage from "./pages/VerifyEmailPage";
 import GoogleSuccessPage from "./pages/GoogleSuccessPage";
 import GooglePasswordPage from "./pages/GooglePasswordPage";
+import NotesPage from "./pages/NotesPage";
+import QuizHistoryPage from "./pages/QuizHistoryPage";
+import SummaryHistoryPage from "./pages/SummaryHistoryPage";
+import HighestScorePage from "./pages/HighestScorePage";
 
 function App() {
   const [sidebarOpen, setSidebarOpen] = useState(false);
@@ -143,8 +147,18 @@ function App() {
                       />
 
                       <Route
+                        path="/highest-score"
+                        element={<HighestScorePage />}
+                      />
+
+                      <Route
                         path="/upload"
                         element={<UploadPage />}
+                      />
+
+                      <Route
+                        path="/notes"
+                        element={<NotesPage />}
                       />
 
                       <Route
@@ -158,8 +172,18 @@ function App() {
                       />
 
                       <Route
+                        path="/summary-history"
+                        element={<SummaryHistoryPage />}
+                      />
+
+                      <Route
                         path="/quiz"
                         element={<QuizPage />}
+                      />
+
+                      <Route
+                        path="/quiz-history"
+                        element={<QuizHistoryPage />}
                       />
 
                       <Route
